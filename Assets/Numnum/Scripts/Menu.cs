@@ -17,55 +17,44 @@ public class Menu : MonoBehaviour
     [SerializeField] public TMP_Text ReduceTimeText;
     [SerializeField] public TMP_Text MinimumTimeText;
 
-    private float DefaultTime = 5f;
-    private float ReduceTime = 0.05f;
-    private float MinimumTime = 0.5f;
+    [Header("Default Values")]
+    private float DefaultTime = 3f;
+    private float ReduceTime = 5f;
+    private float MinimumTime = 1f;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (PlayerPrefs.HasKey("DefaultTime")) {
-            DefaultTimeSlider.value = PlayerPrefs.GetFloat("DefaultTime", DefaultTime);
-            ReduceTimeSlider.value = PlayerPrefs.GetFloat("ReduceTime", ReduceTime) * 100;
-            MinimumTimeSlider.value = PlayerPrefs.GetFloat("MinimumTime", MinimumTime);
-        }
-        else {
-            DefaultTimeSlider.value = DefaultTime;
-            ReduceTimeSlider.value = ReduceTime * 100;
-            MinimumTimeSlider.value = MinimumTime;
-        }
-        // DefaultTimeSlider.onValueChanged.AddListener(delegate {ValueChange("Default Slider", DefaultTimeSlider.value);});
-        // ReduceTimeSlider.onValueChanged.AddListener(delegate {ValueChange("Reduce Slider", ReduceTimeSlider.value);});
-        // MinimumTimeSlider.onValueChanged.AddListener(delegate {ValueChange("Minimum Slider", MinimumTimeSlider.value);});
+        DefaultTimeSlider.value = DefaultTime;
+        ReduceTimeSlider.value = ReduceTime;
+        MinimumTimeSlider.value = MinimumTime;
+        if (PlayerPrefs.HasKey("DefaultTime")) DefaultTimeSlider.value = PlayerPrefs.GetFloat("DefaultTime", DefaultTime);
+        else if (PlayerPrefs.HasKey("DefaultTime")) ReduceTimeSlider.value = PlayerPrefs.GetFloat("ReduceTime", ReduceTime) / 100;
+        else if (PlayerPrefs.HasKey("MinimumTime")) MinimumTimeSlider.value = PlayerPrefs.GetFloat("MinimumTime", MinimumTime);
+        DefaultTimeText.text = DefaultTimeSlider.value.ToString();
+        ReduceTimeText.text = ReduceTimeSlider.value.ToString();
+        MinimumTimeText.text = MinimumTimeSlider.value.ToString();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnDefaultTimeValueChange(System.Single value)
     {
-        if (DefaultTime != DefaultTimeSlider.value) {
-            DefaultTime = DefaultTimeSlider.value;
-            ValueChange("DefaultTime", DefaultTime);
-            DefaultTimeText.text = DefaultTime.ToString();
-        }
-        if ((ReduceTime * 100.0f) != ReduceTimeSlider.value * 1.0f) {
-            ReduceTime = ReduceTimeSlider.value / 100;
-            ValueChange("ReduceTime", ReduceTime);
-            ReduceTimeText.text = ReduceTime.ToString();
-        }        
-        if (MinimumTime != MinimumTimeSlider.value) {
-            MinimumTime = MinimumTimeSlider.value;
-            ValueChange("MinimumTime", MinimumTime);
-            MinimumTimeText.text = MinimumTime.ToString();
-        }
+        DefaultTimeText.text = value.ToString();
+        PlayerPrefs.SetFloat("DefaultTime", value);
     }
 
-    void ValueChange(string type, float value)
+    public void OnReduceTimeValueChange(System.Single value)
     {
-        //Debug.Log("Changing " + type + " to " + value.ToString());
-        PlayerPrefs.SetFloat(type, value);
+        ReduceTimeText.text = value.ToString();
+        PlayerPrefs.SetFloat("ReduceTime", value);
     }
 
-    public void changeScene() {
+    public void OnMinimumTimeValueChange(System.Single value)
+    {
+        MinimumTimeText.text = value.ToString();
+        PlayerPrefs.SetFloat("MinimumTime", value);
+    }
+
+    public void ChangeScene() {
         SceneManager.LoadScene("AntoineCopyPaste");
     }
 }
