@@ -61,7 +61,7 @@ public class Menu : MonoBehaviour
 
     void ValueChange(string type, float value)
     {
-        Debug.Log("Changing " + type + " to " + value.ToString());
+        //Debug.Log("Changing " + type + " to " + value.ToString());
         PlayerPrefs.SetFloat(type, value);
     }
 
