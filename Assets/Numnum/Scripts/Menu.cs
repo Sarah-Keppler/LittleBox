@@ -29,7 +29,7 @@ public class Menu : MonoBehaviour
         ReduceTimeSlider.value = ReduceTime;
         MinimumTimeSlider.value = MinimumTime;
         if (PlayerPrefs.HasKey("DefaultTime")) DefaultTimeSlider.value = PlayerPrefs.GetFloat("DefaultTime", DefaultTime);
-        else if (PlayerPrefs.HasKey("DefaultTime")) ReduceTimeSlider.value = PlayerPrefs.GetFloat("ReduceTime", ReduceTime) / 100;
+        else if (PlayerPrefs.HasKey("DefaultTime")) ReduceTimeSlider.value = PlayerPrefs.GetFloat("ReduceTime", ReduceTime) * 100;
         else if (PlayerPrefs.HasKey("MinimumTime")) MinimumTimeSlider.value = PlayerPrefs.GetFloat("MinimumTime", MinimumTime);
         DefaultTimeText.text = DefaultTimeSlider.value.ToString();
         ReduceTimeText.text = ReduceTimeSlider.value.ToString();
@@ -45,7 +45,7 @@ public class Menu : MonoBehaviour
     public void OnReduceTimeValueChange(System.Single value)
     {
         ReduceTimeText.text = value.ToString();
-        PlayerPrefs.SetFloat("ReduceTime", value);
+        PlayerPrefs.SetFloat("ReduceTime", value / 100);
     }
 
     public void OnMinimumTimeValueChange(System.Single value)
@@ -55,6 +55,9 @@ public class Menu : MonoBehaviour
     }
 
     public void ChangeScene() {
+        PlayerPrefs.SetFloat("DefaultTime", DefaultTimeSlider.value);
+        PlayerPrefs.SetFloat("ReduceTime", ReduceTimeSlider.value / 100);
+        PlayerPrefs.SetFloat("MinimumTime", MinimumTimeSlider.value);
         SceneManager.LoadScene("AntoineCopyPaste");
     }
 }

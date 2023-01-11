@@ -37,12 +37,19 @@ public class NumnumGameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        generateRandomNumber();
-        if (PlayerPrefs.HasKey("Best")) {
-            // best = PlayerPrefs.GetInt("Best");
-            best = 1;
-            Best_Score.text = "Best: " + best.ToString();
+        // Get Player Settings
+        if (PlayerPrefs.HasKey("DefaultTime")) limitTime = PlayerPrefs.GetFloat("DefaultTime", limitTime);
+        else if (PlayerPrefs.HasKey("DefaultTime")) decTime = PlayerPrefs.GetFloat("ReduceTime", decTime) * 100;
+        else if (PlayerPrefs.HasKey("MinimumTime")) minTime = PlayerPrefs.GetFloat("MinimumTime", minTime);
+        if (PlayerPrefs.HasKey("BestScore")) {
+            best = PlayerPrefs.GetInt("Best");
         }
+
+        // Set UI
+        timeText.text = limitTime.ToString() + "s";
+        Best_Score.text = "Best: " + best.ToString();
+
+        generateRandomNumber();
     }
 
     // Update is called once per frame
@@ -79,6 +86,7 @@ public class NumnumGameManager : MonoBehaviour
     public void PressKey(int key)
     {
         if (!resume) return;
+        GetComponent<AudioSource>().Play();
         if (key == number) {
             scoreText.text = "Score: " + (++score).ToString();
             generateRandomNumber();
