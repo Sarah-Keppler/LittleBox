@@ -21,6 +21,8 @@ public class NumnumGameManager : MonoBehaviour
     public TMP_Text scoreText;
     public TMP_Text numText;
     public TMP_Text timeText;
+    public TMP_Text Best_Score;
+    public TMP_Text Best_Score_Over;
 
     [Header("Game Over")]
     public GameObject gameOverScreen;
@@ -30,11 +32,17 @@ public class NumnumGameManager : MonoBehaviour
     Color white = new Color(255, 255, 255, 255);
 
     bool resume = true;
+    int best = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         generateRandomNumber();
+        if (PlayerPrefs.HasKey("Best")) {
+            // best = PlayerPrefs.GetInt("Best");
+            best = 1;
+            Best_Score.text = "Best: " + best.ToString();
+        }
     }
 
     // Update is called once per frame
@@ -72,7 +80,7 @@ public class NumnumGameManager : MonoBehaviour
     {
         if (!resume) return;
         if (key == number) {
-            scoreText.text = (++score).ToString();
+            scoreText.text = "Score: " + (++score).ToString();
             generateRandomNumber();
             limitTime -= decTime;
             if (limitTime < minTime) limitTime = minTime;
@@ -85,10 +93,22 @@ public class NumnumGameManager : MonoBehaviour
     {
         resume = false;
         gameOverScreen.SetActive(true);
+        if (score > best) {
+            best = score;
+            PlayerPrefs.SetInt("Best", best);
+            Best_Score_Over.enabled = true;
+        } else {
+            Best_Score_Over.enabled = false;
+        }
     }
 
     public void restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }
