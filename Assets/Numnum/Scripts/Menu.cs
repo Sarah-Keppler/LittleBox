@@ -25,12 +25,9 @@ public class Menu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DefaultTimeSlider.value = DefaultTime;
-        ReduceTimeSlider.value = ReduceTime;
-        MinimumTimeSlider.value = MinimumTime;
-        if (PlayerPrefs.HasKey("DefaultTime")) DefaultTimeSlider.value = PlayerPrefs.GetFloat("DefaultTime", DefaultTime);
-        else if (PlayerPrefs.HasKey("DefaultTime")) ReduceTimeSlider.value = PlayerPrefs.GetFloat("ReduceTime", ReduceTime) * 100;
-        else if (PlayerPrefs.HasKey("MinimumTime")) MinimumTimeSlider.value = PlayerPrefs.GetFloat("MinimumTime", MinimumTime);
+        if (PlayerPrefs.HasKey("DefaultTime")) DefaultTimeSlider.value = PlayerPrefs.GetFloat("DefaultTime", DefaultTime); else DefaultTimeSlider.value = DefaultTime;
+        if (PlayerPrefs.HasKey("ReduceTime")) ReduceTimeSlider.value = PlayerPrefs.GetFloat("ReduceTime", ReduceTime) * 100f; else ReduceTimeSlider.value = ReduceTime;
+        if (PlayerPrefs.HasKey("MinimumTime")) MinimumTimeSlider.value = PlayerPrefs.GetFloat("MinimumTime", MinimumTime); else MinimumTimeSlider.value = MinimumTime;
         DefaultTimeText.text = DefaultTimeSlider.value.ToString();
         ReduceTimeText.text = ReduceTimeSlider.value.ToString();
         MinimumTimeText.text = MinimumTimeSlider.value.ToString();
@@ -56,7 +53,7 @@ public class Menu : MonoBehaviour
 
     public void ChangeScene() {
         PlayerPrefs.SetFloat("DefaultTime", DefaultTimeSlider.value);
-        PlayerPrefs.SetFloat("ReduceTime", ReduceTimeSlider.value / 100);
+        PlayerPrefs.SetFloat("ReduceTime", ReduceTimeSlider.value / 100f);
         PlayerPrefs.SetFloat("MinimumTime", MinimumTimeSlider.value);
         SceneManager.LoadScene("AntoineCopyPaste");
     }

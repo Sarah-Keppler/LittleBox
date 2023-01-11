@@ -38,15 +38,16 @@ public class NumnumGameManager : MonoBehaviour
     void Start()
     {
         // Get Player Settings
+
         if (PlayerPrefs.HasKey("DefaultTime")) limitTime = PlayerPrefs.GetFloat("DefaultTime", limitTime);
-        else if (PlayerPrefs.HasKey("DefaultTime")) decTime = PlayerPrefs.GetFloat("ReduceTime", decTime) * 100;
-        else if (PlayerPrefs.HasKey("MinimumTime")) minTime = PlayerPrefs.GetFloat("MinimumTime", minTime);
-        if (PlayerPrefs.HasKey("BestScore")) {
-            best = PlayerPrefs.GetInt("Best");
+        if (PlayerPrefs.HasKey("ReduceTime")) decTime = PlayerPrefs.GetFloat("ReduceTime", decTime);
+        if (PlayerPrefs.HasKey("MinimumTime")) minTime = PlayerPrefs.GetFloat("MinimumTime", minTime);
+        if (PlayerPrefs.HasKey("Best")) {
+            best = PlayerPrefs.GetInt("Best", best);
         }
 
         // Set UI
-        timeText.text = limitTime.ToString() + "s";
+        timeText.text = limitTime.ToString("F2") + "s";
         Best_Score.text = "Best: " + best.ToString();
 
         generateRandomNumber();
@@ -92,7 +93,7 @@ public class NumnumGameManager : MonoBehaviour
             generateRandomNumber();
             limitTime -= decTime;
             if (limitTime < minTime) limitTime = minTime;
-            timeText.text = limitTime.ToString() + "s";
+            timeText.text = limitTime.ToString("F2") + "s"; // F2 for float with two digits
             timer = 0;
         } else gameOver();
     }
